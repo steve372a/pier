@@ -1,6 +1,6 @@
 <r><img src="https://steve372a.github.io/images/avatar.gif" alt></r>
 
-# Pier Package Installer (v2.0.0 Release)
+# Pier Package Installer
 
 Pier 是一个基于 **Batch (BAT)** 与 **MSHTA** 构建的轻量级包管理器。本项目目前仍在完善中，旨在为 Windows 用户提供简单、透明且兼容性极强的软件管理方案。
 
