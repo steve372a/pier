@@ -1,4 +1,5 @@
-<img src="https://steve372a.github.io/images/avatar.gif" alt>
+<r><img src="https://steve372a.github.io/images/avatar.gif" alt></r>
+
 # Package Installer 仓库
 Pier 是基于 BAT / MSHTA 的包管理器，目前仍在完善中。
 # 兼容设备
