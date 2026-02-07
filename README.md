@@ -43,7 +43,7 @@ Pier 是一个基于 **Batch (BAT)** 与 **MSHTA** 构建的轻量级包管理�
 ---
 
 ## 💻 兼容系统
-* **Windows XP SP3 及以上**（针对老旧运维环境进行了核心兼容性优化）。
+* **Windows XP 及以上（Pier v1.0.1 版本在 Windows XP Service Pack 1 测试正常。）**（针对老旧运维环境进行了核心兼容性优化）。
 
 ## 许可证与第三方声明 (License)
 
