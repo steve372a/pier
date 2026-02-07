@@ -52,5 +52,5 @@ Pier 是一个基于 **Batch (BAT)** 与 **MSHTA** 构建的轻量级包管理�
 
 ## 🌐 官方资源
 * **官方网站**: [steve372a.github.io/pier](https://steve372a.github.io/pier)
-* **默认软件源（Raw）**: `[https://steve372a.github.io/pier-repo](https://steve372a.github.io/pier-repo)`
-* **默认软件源**: `[https://steve372a.github.io/pier-repo](https://github.com/steve372a/pier-repo)`
+* **默认软件源（Raw）**: `https://steve372a.github.io/pier-repo`
+* **默认软件源**: [https://steve372a.github.io/pier-repo](https://github.com/steve372a/pier-repo)
