@@ -2,10 +2,10 @@
 
 # Pier Package Installer
 
-Pier 是一个基于 **Batch (BAT)** 与 **MSHTA** 构建的轻量级包管理器。本项目是为了给 Windows 用户提供一个简单、透明、高兼容性（甚至支持 Windows XP）且具备安全审计能力的软件管理方案。
+Pier 是一个基于 **Batch (BAT)、C语言** 构建的轻量级包管理器。本项目是为了给 Windows 用户提供一个简单、透明、易用、自由、高兼容性（支持 Windows XP）的包管理器。
 
 > **立项时间**：2022年8月  
-> **当前版本**：2.1.0 / 2.2.0 Beta 
+> **当前版本**：2.1.0 / 2.2.0 Beta / 2.2.0 Release
 
 ---
 
@@ -43,11 +43,11 @@ Pier 是一个基于 **Batch (BAT)** 与 **MSHTA** 构建的轻量级包管理�
 ---
 
 ## 💻 兼容系统
-* **Windows XP 及以上（Pier v1.0.1 版本在 Windows XP Service Pack 1 测试正常。）**（针对老旧运维环境进行了核心兼容性优化）。
+* **Windows XP 及以上（Pier v2.2.0 版本在 Windows XP Service Pack 1 测试正常。）**（针对老旧运维环境进行了核心兼容性优化）。
 
 ## 许可证与第三方声明 (License)
 
-* **第三方组件**：包含 `unzip.exe`、`uma-get(wget).exe` 等，遵循其各自的开源协议。
+* **第三方组件**：包含 `unzip.exe`、`uma-get(wget).exe` 等，遵循其各自的开源协议。你可以参照Release中的NOTICE文件。
 * **主程序**：Pier 采用 **MIT License** 开源。
 
 ## 🌐 官方资源
