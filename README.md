@@ -45,7 +45,7 @@ Pier 是一个基于 **Batch (BAT)、C语言** 构建的轻量级包管理器。
 ---
 
 ## 💻 兼容系统
-* **Windows XP 及以上（Pier v2.2.0 版本在 Windows XP Service Pack 1 测试正常。）**（针对老旧运维环境进行了核心兼容性优化）。
+* **Windows XP 及以上（Pier v2.2.0 版本在 Windows XP Service Pack 3 测试正常。）**（针对老旧运维环境进行了核心兼容性优化）。
   
 <img width="1280" height="720" alt="b921d5b8359ac1e57d1ed24972241820" src="https://github.com/user-attachments/assets/bca3185e-a407-4d3b-b034-344042714a32" />
 
