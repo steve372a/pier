@@ -4,9 +4,10 @@
 
 Pier 是一个基于 **Batch (BAT)、C语言** 构建的轻量级包管理器。本项目是为了给 Windows 用户提供一个简单、透明、易用、自由、高兼容性（支持 Windows XP）的包管理器。
 
+**本项目使用 AI Agent 辅助。**
+
 > **立项时间**：2022年8月  
 > **当前版本**：2.1.0 / 2.2.0 Beta / 2.2.0 Release
-> **本项目使用 AI Agent 辅助。**
 
 ---
 
@@ -45,6 +46,9 @@ Pier 是一个基于 **Batch (BAT)、C语言** 构建的轻量级包管理器。
 
 ## 💻 兼容系统
 * **Windows XP 及以上（Pier v2.2.0 版本在 Windows XP Service Pack 1 测试正常。）**（针对老旧运维环境进行了核心兼容性优化）。
+  
+<img width="1280" height="720" alt="b921d5b8359ac1e57d1ed24972241820" src="https://github.com/user-attachments/assets/bca3185e-a407-4d3b-b034-344042714a32" />
+
 
 ## 许可证与第三方声明 (License)
 
