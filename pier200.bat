@@ -1,15 +1,15 @@
 @echo off
-:: ĞŞ¸´
+:: ä¿®å¤
 setlocal enabledelayedexpansion
 SET /P LANGUAGE_DIR=< .\share\config\language.ini
-:: ÉèÖÃÒ»Ğ©»ù´¡ÉèÖÃ£º
-:: !!¶àÓïÑÔÖ§³Ö!!
-:: ÒÔÏÂÊÇ³õÊ¼»¯ÉèÖÃºÍÓïÑÔÅäÖÃ¼ÓÔØ²¿·Ö
+:: è®¾ç½®ä¸€äº›åŸºç¡€è®¾ç½®ï¼š
+:: !!å¤šè¯­è¨€æ”¯æŒ!!
+:: ä»¥ä¸‹æ˜¯åˆå§‹åŒ–è®¾ç½®å’Œè¯­è¨€é…ç½®åŠ è½½éƒ¨åˆ†
 title Package Installer by Sanakaprix
 cd /d %~dp0
 SET version=2.0.0 Release
 
-:: ÇåÀí¿ÉÄÜ²ĞÁôµÄÁÙÊ±ÎÄ¼ş£¨Ìí¼ÓÑÓÊ±·ÀÖ¹ÎÄ¼şÕ¼ÓÃ£©
+:: æ¸…ç†å¯èƒ½æ®‹ç•™çš„ä¸´æ—¶æ–‡ä»¶ï¼ˆæ·»åŠ å»¶æ—¶é˜²æ­¢æ–‡ä»¶å ç”¨ï¼‰
 if exist "%Temp%\pier_choice.tmp" (
     echo wscript.sleep 200 >%Temp%\Wait.vbs
     start /wait %Temp%\Wait.vbs
@@ -23,14 +23,14 @@ if exist "%Temp%\pier_env.tmp" (
 
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[welcome\]/{n;p}" %LANGUAGE_DIR%\lang.ini') do @set "welcome=%%a"
 <nul set /p "=%welcome% %version%"
-:: ÉèÖÃÀ­È¡Èí¼ş°üÔ´µÄÈ±Ê¡Â·¾¶
+:: è®¾ç½®æ‹‰å–è½¯ä»¶åŒ…æºçš„ç¼ºçœè·¯å¾„
 SET sourceimage=/sources
 SET onlinelist=/list/listonline.zip
 
-:: ¼ÓÔØ°²È«Éó¼ÆÓë±£»¤Ïà¹ØµÄ¶àÓïÑÔ±äÁ¿
+:: åŠ è½½å®‰å…¨å®¡è®¡ä¸ä¿æŠ¤ç›¸å…³çš„å¤šè¯­è¨€å˜é‡
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[Invalid_file_variable\]/{n;p}" %LANGUAGE_DIR%\lang.ini') do @set "invalid_file=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[error_protected_lang\]/{n;p}" %LANGUAGE_DIR%\lang.ini') do @set "error_protected_lang=%%a"
-:: ÓïÑÔÖ§³Ö£¨Ê¹ÓÃ¹Ø¼ü´ÊËÑË÷Ä£Ê½£¬±ÜÃâĞĞºÅÒÀÀµ£©
+:: è¯­è¨€æ”¯æŒï¼ˆä½¿ç”¨å…³é”®è¯æœç´¢æ¨¡å¼ï¼Œé¿å…è¡Œå·ä¾èµ–ï¼‰
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[autoyes\]/{n;p}" %LANGUAGE_DIR%\lang.ini') do @set "autoyes=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[choiceapp\]/{n;p}" %LANGUAGE_DIR%\lang.ini') do @set "choiceapp=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[choicelang\]/{n;p}" %LANGUAGE_DIR%\lang.ini') do @set "choicelang=%%a"
@@ -84,21 +84,21 @@ for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[db_list_suffix\]/{n;p}" %LANGUAGE
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[db_list_filename\]/{n;p}" %LANGUAGE_DIR%\lang.ini') do @set "db_list_filename=%%a"
 
 echo.
-:: Ä¬ÈÏÈí¼ş°üÔ´ÍøÂçµØÖ·
+:: é»˜è®¤è½¯ä»¶åŒ…æºç½‘ç»œåœ°å€
 SET /P source=< .\share\config\sourceimage.ini
-:: ºÏ²¢
+:: åˆå¹¶
 SET full_list_url=%source%%onlinelist%
 SET pies=/pies
 SET full_source_url=%source%%sourceimage%
 SET full_pies_url=%source%%pies%
 
-:: ½âÎöÃüÁîĞĞ²ÎÊı
+:: è§£æå‘½ä»¤è¡Œå‚æ•°
 SET parameters=%1
 SET package=%2
 SET custom=%3
 SET autoyes=%4
-:: autoyes=×Ô¶¯Ö´ĞĞ°²×°
-:: ÖÇÄÜ¼ì²â -y ²ÎÊıÎ»ÖÃ
+:: autoyes=è‡ªåŠ¨æ‰§è¡Œå®‰è£…
+:: æ™ºèƒ½æ£€æµ‹ -y å‚æ•°ä½ç½®
 if /I "%2%"=="-y" (
     set "autoyes=-y"
     set "package=%3"
@@ -133,22 +133,22 @@ echo %error_invalid_cmd%
 goto quit
 
 :onlinepulllist
-:: ÑÓÊ± 280ms
+:: å»¶æ—¶ 280ms
 if exist %Temp%\db.sque Del /f /s /q %Temp%\db.sque > nul
 if exist %Temp%\dbm.sque Del /f /s /q %Temp%\dbm.sque > nul
 echo wscript.sleep 320 >%Temp%\Wait.vbs
 start /wait %Temp%\Wait.vbs  
 echo %db_download_msg%%db_list_filename%
-:: ÏÂÔØ db.sque£¨°üÁĞ±í£©
+:: ä¸‹è½½ db.squeï¼ˆåŒ…åˆ—è¡¨ï¼‰
 .\bin\uma-get.exe -q -P "%Temp%" --no-check-certificate "%source%/db.sque"
 If not exist %Temp%\db.sque goto error_dbsque
-:: ÏÂÔØ dbm.sque£¨°üÊıÁ¿ÔªÊı¾İ£©
+:: ä¸‹è½½ dbm.squeï¼ˆåŒ…æ•°é‡å…ƒæ•°æ®ï¼‰
 .\bin\uma-get.exe -q -P "%Temp%" --no-check-certificate "%source%/dbm.sque"
 If not exist %Temp%\db.sque goto error_dbsque
-:: ¶ÁÈ¡ db.sque ºÍ dbm.sque£¨db.sque °üº¬°üÁĞ±í£¬dbm.sque ½ö°üº¬°üÊıÁ¿£©
+:: è¯»å– db.sque å’Œ dbm.squeï¼ˆdb.sque åŒ…å«åŒ…åˆ—è¡¨ï¼Œdbm.sque ä»…åŒ…å«åŒ…æ•°é‡ï¼‰
 SET /P dbmsq=< %Temp%\dbm.sque
 if exist %Temp%\dbm.sque Del /f /s /q %Temp%\dbm.sque > nul
-:: ÒÔÏÂÊÇ·şÎñÆ÷ÁĞ³öµÄÈí¼ş°ü£¬¹²ÓĞ X ¸ö°ü¡££¨dbmsq ÊÇ°üÊıÁ¿£©
+:: ä»¥ä¸‹æ˜¯æœåŠ¡å™¨åˆ—å‡ºçš„è½¯ä»¶åŒ…ï¼Œå…±æœ‰ X ä¸ªåŒ…ã€‚ï¼ˆdbmsq æ˜¯åŒ…æ•°é‡ï¼‰
 echo %db_list_intro%%db_list_count_msg% %dbmsq% %db_list_suffix%
 echo.
 type %Temp%\db.sque
@@ -180,7 +180,7 @@ echo %language_installed%
 rd /s /q %~dp0share\language\%custom% > nul
 goto langinstall
 
-:: Èç¹û¼ì²âµ½ pier install µÄ°üÊÇÓïÑÔ
+:: å¦‚æœæ£€æµ‹åˆ° pier install çš„åŒ…æ˜¯è¯­è¨€
 :ifpackislang
 SET custom=%package%
 goto ifpackislang_ins
@@ -188,9 +188,9 @@ goto ifpackislang_ins
 :langinstall
 if exist %~dp0share\language\%custom% goto langdelete
 :forceinstalllanguage
-:: ÏÂÔØÔªÊı¾İ°ü
+:: ä¸‹è½½å…ƒæ•°æ®åŒ…
 if "%custom%"=="" goto error2
-:: ÑÓÊ± 280ms
+:: å»¶æ—¶ 280ms
 echo wscript.sleep 280 >%Temp%\Wait.vbs
 start /wait %Temp%\Wait.vbs
 echo %loading_metadata%
@@ -200,14 +200,14 @@ Del /f /s /q .\metadata\*.* > nul
 If not exist %Temp%\%custom%.metadata goto error3
 .\bin\unzip.exe %Temp%\%custom%.metadata -d %~dp0metadata > nul
 Del /f /s /q %Temp%\%custom%.metadata > nul
-:: ÉèÖÃÔªÊı¾İ°üµÄ±äÁ¿
+:: è®¾ç½®å…ƒæ•°æ®åŒ…çš„å˜é‡
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[Version\]/{n;p}" .\metadata\metadata.sque') do @set "packageversion=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[PackageName\]/{n;p}" .\metadata\metadata.sque') do @set "packagename=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[InstallerName\]/{n;p}" .\metadata\metadata.sque') do @set "installername=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[OS\]/{n;p}" .\metadata\metadata.sque') do @set "ossystem=%%a"
 echo %list_package_name% %packagename%
 echo %list_version% %packageversion%
-:: ×Ô¶¯°²×°£¨ÓïÑÔ°ü¸´ÓÃ install ÃüÁîµÄ autoyes ²ÎÊı£©
+:: è‡ªåŠ¨å®‰è£…ï¼ˆè¯­è¨€åŒ…å¤ç”¨ install å‘½ä»¤çš„ autoyes å‚æ•°ï¼‰
 if /I "%autoyes%"=="-y" goto langnext
 if /I "%autoyes%"=="y" goto langnext
 if /I "%autoyes%"=="yes" goto langnext
@@ -220,19 +220,19 @@ goto quit
 
 :langnext
 if exist %Temp%\%installername%.pie Del /f /s /q %Temp%\%installername%.pie > nul
-:: °²×°ĞÂÓïÑÔ
+:: å®‰è£…æ–°è¯­è¨€
 echo %download_progress% %packagename%...
-:: ¶ÁÈ¡ÓïÑÔÔªÊı¾İ - packageurl
+:: è¯»å–è¯­è¨€å…ƒæ•°æ® - packageurl
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[URL\]/{n;p}" .\metadata\metadata.sque') do @set "packageurl=%%a"
-:: ÉèÖÃÁÙÊ±½âÑ¹ÎÄ¼ş¼Ğ
+:: è®¾ç½®ä¸´æ—¶è§£å‹æ–‡ä»¶å¤¹
 SET installtemp=C:\steve372-folders\sources\pier@%ossystem%\%custom%
-:: ÏÂÔØÓïÑÔ°ü
+:: ä¸‹è½½è¯­è¨€åŒ…
 .\bin\uma-get.exe -q -P "%Temp%" --no-check-certificate %source%%packageurl%
 rename %Temp%\%installername%.pie %installername%-temp.exe > nul
 echo %install_progress% %packagename%...
-:: Ö´ĞĞÓïÑÔ°²×°°ü£¬±ê×¼µÄ°ü»á½âÑ¹ÖÁÁÙÊ±½âÑ¹ÎÄ¼ş¼Ğ
+:: æ‰§è¡Œè¯­è¨€å®‰è£…åŒ…ï¼Œæ ‡å‡†çš„åŒ…ä¼šè§£å‹è‡³ä¸´æ—¶è§£å‹æ–‡ä»¶å¤¹
 %Temp%\%installername%-temp.exe
-:: °²×°ÓïÑÔ
+:: å®‰è£…è¯­è¨€
 Del /f /s /q %Temp%\%installername%-temp.exe > nul
 if not exist %~dp0share\language\%custom% mkdir %~dp0share\language\%custom%
 copy %installtemp%\*.* %~dp0share\language\%custom%> nul
@@ -241,21 +241,21 @@ echo %language_installed_success%
 goto quit
 
 :search
-:: ËÑË÷£¬²éÑ¯°ü¡£
-:: ÑÓÊ± 280ms
+:: æœç´¢ï¼ŒæŸ¥è¯¢åŒ…ã€‚
+:: å»¶æ—¶ 280ms
 if exist %Temp%\db.sque Del /f /s /q %Temp%\db.sque > nul
 echo wscript.sleep 320 >%Temp%\Wait.vbs
 start /wait %Temp%\Wait.vbs  
 echo %db_download_tip%
-:: ÏÂÔØ db.sque
+:: ä¸‹è½½ db.sque
 .\bin\uma-get.exe -q -P "%Temp%" --no-check-certificate "%source%/db.sque"
 If not exist %Temp%\db.sque goto error_dbsque
-:: ¶ÁÈ¡ db.sque ÎÄ¼ş²¢ËÑË÷Æ¥ÅäÏî
+:: è¯»å– db.sque æ–‡ä»¶å¹¶æœç´¢åŒ¹é…é¡¹
 set counter='0'
 set "dbfile=%TEMP%\db.sque"
-echo ÕıÔÚËÑË÷ "%package%"...
+echo æ­£åœ¨æœç´¢ "%package%"...
 findstr /i /r /c:"^.*%package%.*$" "%dbfile%" > results.tmp
-:: Õ¹Ê¾ÓÅ»¯ºóµÄ½á¹û
+:: å±•ç¤ºä¼˜åŒ–åçš„ç»“æœ
 if %errorlevel% equ 0 (
     echo %search_results_title%
     type results.tmp
@@ -268,18 +268,18 @@ goto quit
 
 
 :help
-:: ÏÔÊ¾ÓïÑÔ»·¾³ÖĞ´æ´¢µÄ°ïÖúÑ¡Ïî
+:: æ˜¾ç¤ºè¯­è¨€ç¯å¢ƒä¸­å­˜å‚¨çš„å¸®åŠ©é€‰é¡¹
 type %LANGUAGE_DIR%\help.lang
 goto quit
 
-:: ¸÷ÖÖ´íÎóÏÔÊ¾ºó£¬%%±äÁ¿ÊµÏÖ¶àÓïÑÔÖ§³Ö£¬ÍË³öpier
+:: å„ç§é”™è¯¯æ˜¾ç¤ºåï¼Œ%%å˜é‡å®ç°å¤šè¯­è¨€æ”¯æŒï¼Œé€€å‡ºpier
 
 :error1
-:: ²ÎÊıÎª¿ÕÖµ
+:: å‚æ•°ä¸ºç©ºå€¼
 echo %error_no_param%
 goto quit
 
-:: ·Ç·¨×Ö·û
+:: éæ³•å­—ç¬¦
 :error_inprepo
 echo %error_invalid_cmd%
 goto quit
@@ -297,27 +297,27 @@ echo %db_download_error%
 goto quit
 
 :pullfailed
-:: À­È¡Ê§°Ü
+:: æ‹‰å–å¤±è´¥
 echo %pull_list_failed%
 goto quit
 
 :error4
-:: °üÏÂÔØÊ§°Ü
+:: åŒ…ä¸‹è½½å¤±è´¥
 echo %error_install_failed%
 goto quit
 
 :error5
-:: »ù±¾ÓïÑÔ²»ÄÜĞ¶ÔØ
+:: åŸºæœ¬è¯­è¨€ä¸èƒ½å¸è½½
 echo %error_protected_lang%
 goto quit
 
 :ok1
-:: "Õâ¸öÓ¦ÓÃÄã»¹Ã»ÓĞ°²×°¡£"
+:: "è¿™ä¸ªåº”ç”¨ä½ è¿˜æ²¡æœ‰å®‰è£…ã€‚"
 echo %package_not_installed%
 goto quit
 
 :repo
-::Ìø×ª
+::è·³è½¬
 if "%package%"=="" goto repo_chg
 if "%package%"=="list" goto repo_check
 if "%package%"=="change" goto repo_chg
@@ -327,28 +327,28 @@ goto quit
 
 :repo_chg
 if /I "%custom%"=="" goto repo_chg2
-:: »»Ô´
+:: æ¢æº
 echo %checking_source%
 if exist %Temp%\db.sque Del /f /s /q %Temp%\db.sque > nul
-:: Èç¹û%custom%²ÎÊı½áÎ²ÊÇ/£¬¾ÍÉ¾³ı
+:: å¦‚æœ%custom%å‚æ•°ç»“å°¾æ˜¯/ï¼Œå°±åˆ é™¤
 if "!custom:~-1!" == "/" ( 
     set "custom=!custom:~0,-1!"
 )
-:: Èç¹û%custom%²ÎÊı½áÎ²ÊÇ¿Õ¸ñ£¬¾ÍÉ¾³ı
+:: å¦‚æœ%custom%å‚æ•°ç»“å°¾æ˜¯ç©ºæ ¼ï¼Œå°±åˆ é™¤
 if "!custom:~-1!" == " " (
     set "custom=!custom:~0,-1!"
 )
-:: ¼ì²éÓÃ»§ÊäÈëµÄÔ´ÊÇ·ñ¿ÉÒÔ·ÃÎÊ
+:: æ£€æŸ¥ç”¨æˆ·è¾“å…¥çš„æºæ˜¯å¦å¯ä»¥è®¿é—®
 .\bin\uma-get.exe -q -P "%Temp%" --no-check-certificate "%custom%/info.sque"
 If not exist %Temp%\info.sque goto error_repo
-:: ¶ÁÈ¡Ô´ info ĞÅÏ¢£¨Ô´ĞÅÏ¢ÎÄ¼ş²ÉÓÃÏàÍ¬¸ñÊ½£º[±êÇ©]\nÖµ\n¿ÕĞĞ£©
+:: è¯»å–æº info ä¿¡æ¯ï¼ˆæºä¿¡æ¯æ–‡ä»¶é‡‡ç”¨ç›¸åŒæ ¼å¼ï¼š[æ ‡ç­¾]\nå€¼\nç©ºè¡Œï¼‰
 for /f "delims=" %%a in ('.\bin\sed.exe -n "2p" %Temp%\info.sque') do @set "info_namecn=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "4p" %Temp%\info.sque') do @set "info_nameen=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "6p" %Temp%\info.sque') do @set "info_category=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "8p" %Temp%\info.sque') do @set "info_owner=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "10p" %Temp%\info.sque') do @set "info_admin=%%a"
 Del /f /s /q %Temp%\info.sque > nul
-:: ¼ì²âÊÇ·ñÎª¹Ù·½Ô´»ò°²È«Ô´¡£
+:: æ£€æµ‹æ˜¯å¦ä¸ºå®˜æ–¹æºæˆ–å®‰å…¨æºã€‚
 if /I "%custom%"=="https://steve372a.github.io/pier/repo" (
 for /f "delims=" %%a in ('.\bin\sed.exe -n "82p" %LANGUAGE_DIR%\lang.ini') do @set "official=%%a"
 )
@@ -356,7 +356,7 @@ if /I "%custom%"=="https://mirrors.myxuebi.top/pier" (
 for /f "delims=" %%a in ('.\bin\sed.exe -n "84p" %LANGUAGE_DIR%\lang.ini') do @set "official=%%a"
 )
 
-:: Èç¹ûÓïÑÔÊÇÖĞÎÄ£¬ÄÇÃ´ÏÔÊ¾ÖĞÎÄ£¬·ñÔòÏÔÊ¾Ó¢Óï¡£
+:: å¦‚æœè¯­è¨€æ˜¯ä¸­æ–‡ï¼Œé‚£ä¹ˆæ˜¾ç¤ºä¸­æ–‡ï¼Œå¦åˆ™æ˜¾ç¤ºè‹±è¯­ã€‚
 if /I "%LANGUAGE_DIR%"==".\share\language\zh-CN" (
 echo %source_name_label% %info_namecn% %official%
 ) else (
@@ -364,20 +364,20 @@ echo %source_name_label% %info_nameen% %official%
 )
 echo %source_owner_label% %info_owner%
 echo %source_admin_label% %info_admin%
-:: ¼ì²â°²È«Èí¼şÔ´
+:: æ£€æµ‹å®‰å…¨è½¯ä»¶æº
 if /I "%custom%"=="https://steve372a.github.io/pier/repo" goto nextchangemirror
 if /I "%custom%"=="https://mirrors.myxuebi.top/pier" goto nextchangemirror
-:: ÃâÔğÉùÃ÷
+:: å…è´£å£°æ˜
 echo.
 echo %repo_change_confirm%
 echo %repo_change_confirm_2%
 echo %repo_change_confirm_3%
-:: Y¼ÌĞø£¬N»òÆäËû¼üÍË³ö¡£
+:: Yç»§ç»­ï¼ŒNæˆ–å…¶ä»–é”®é€€å‡ºã€‚
 SET /P INS= (Y/N): 
 If /I "%INS%"=="Y" echo. && goto nextchangemirror
 goto quit
 :nextchangemirror
-:: ´æÔÚ¾ÍÉ¾
+:: å­˜åœ¨å°±åˆ 
 if exist .\share\config\sourceimage.ini Del /f /s /q .\share\config\sourceimage.ini > nul
 echo %custom%> .\share\config\sourceimage.ini
 echo.
@@ -385,12 +385,12 @@ echo %repo_changed%
 echo %custom%
 goto quit
 
-:: ¿ìËÙ»»Ô´
+:: å¿«é€Ÿæ¢æº
 :repo_chg2
 echo %source_select_prompt%
 echo %source_select_options%
-SET /P INS= ÇëÑ¡Ôñ: 
-:: Ñ¡ÔñÓÃ»§²Ù×÷
+SET /P INS= è¯·é€‰æ‹©: 
+:: é€‰æ‹©ç”¨æˆ·æ“ä½œ
 If /I "%INS%"=="1" (
     set "custom=https://steve372a.github.io/pier/repo"
     goto changesource
@@ -401,31 +401,31 @@ If /I "%INS%"=="2" (
 )
 goto quit
 
-:: =========================================================== ¿ìËÙ»»Ô´ ===========================================================
+:: =========================================================== å¿«é€Ÿæ¢æº ===========================================================
 :changesource
-:: »»Ô´
+:: æ¢æº
 echo %checking_source%
 if exist %Temp%\db.sque Del /f /s /q %Temp%\db.sque > nul
 if /I "%custom%"=="" goto repo_chg2
-:: Èç¹û%custom%²ÎÊı½áÎ²ÊÇ/£¬¾ÍÉ¾³ı
+:: å¦‚æœ%custom%å‚æ•°ç»“å°¾æ˜¯/ï¼Œå°±åˆ é™¤
 if "!custom:~-1!" == "/" ( 
     set "custom=!custom:~0,-1!"
 )
-:: Èç¹û%custom%²ÎÊı½áÎ²ÊÇ¿Õ¸ñ£¬¾ÍÉ¾³ı
+:: å¦‚æœ%custom%å‚æ•°ç»“å°¾æ˜¯ç©ºæ ¼ï¼Œå°±åˆ é™¤
 if "!custom:~-1!" == " " (
     set "custom=!custom:~0,-1!"
 )
-:: ¼ì²éÓÃ»§ÊäÈëµÄÔ´ÊÇ·ñ¿ÉÒÔ·ÃÎÊ
+:: æ£€æŸ¥ç”¨æˆ·è¾“å…¥çš„æºæ˜¯å¦å¯ä»¥è®¿é—®
 .\bin\uma-get.exe -q -P "%Temp%" --no-check-certificate "%custom%/info.sque"
 If not exist %Temp%\info.sque goto error_repo
-:: ¶ÁÈ¡Ô´ info ĞÅÏ¢£¨Ô´ĞÅÏ¢ÎÄ¼ş²ÉÓÃÏàÍ¬¸ñÊ½£º[±êÇ©]\nÖµ\n¿ÕĞĞ£©
+:: è¯»å–æº info ä¿¡æ¯ï¼ˆæºä¿¡æ¯æ–‡ä»¶é‡‡ç”¨ç›¸åŒæ ¼å¼ï¼š[æ ‡ç­¾]\nå€¼\nç©ºè¡Œï¼‰
 for /f "delims=" %%a in ('.\bin\sed.exe -n "2p" %Temp%\info.sque') do @set "info_namecn=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "4p" %Temp%\info.sque') do @set "info_nameen=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "6p" %Temp%\info.sque') do @set "info_category=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "8p" %Temp%\info.sque') do @set "info_owner=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "10p" %Temp%\info.sque') do @set "info_admin=%%a"
 Del /f /s /q %Temp%\info.sque > nul
-:: ¼ì²âÊÇ·ñÎª¹Ù·½Ô´»ò°²È«Ô´¡£
+:: æ£€æµ‹æ˜¯å¦ä¸ºå®˜æ–¹æºæˆ–å®‰å…¨æºã€‚
 if /I "%custom%"=="https://steve372a.github.io/pier/repo" (
 for /f "delims=" %%a in ('.\bin\sed.exe -n "82p" %LANGUAGE_DIR%\lang.ini') do @set "official=%%a"
 ) else (
@@ -435,7 +435,7 @@ if /I "%custom%"=="https://mirrors.myxuebi.top/pier" (
 for /f "delims=" %%a in ('.\bin\sed.exe -n "84p" %LANGUAGE_DIR%\lang.ini') do @set "official=%%a"
 )
 
-:: Èç¹ûÓïÑÔÊÇÖĞÎÄ£¬ÄÇÃ´ÏÔÊ¾ÖĞÎÄ£¬·ñÔòÏÔÊ¾Ó¢Óï¡£
+:: å¦‚æœè¯­è¨€æ˜¯ä¸­æ–‡ï¼Œé‚£ä¹ˆæ˜¾ç¤ºä¸­æ–‡ï¼Œå¦åˆ™æ˜¾ç¤ºè‹±è¯­ã€‚
 if /I "%LANGUAGE_DIR%"==".\share\language\zh-CN" (
 echo %source_name_label% %info_namecn% %official%
 ) else (
@@ -443,20 +443,20 @@ echo %source_name_label% %info_nameen% %official%
 )
 echo %source_owner_label% %info_owner%
 echo %source_admin_label% %info_admin%
-:: ¼ì²â°²È«Èí¼şÔ´
+:: æ£€æµ‹å®‰å…¨è½¯ä»¶æº
 if /I "%custom%"=="https://steve372a.github.io/pier/repo" goto nextchangemirror
 if /I "%custom%"=="https://mirrors.myxuebi.top/pier" goto nextchangemirror
-:: ÃâÔğÉùÃ÷
+:: å…è´£å£°æ˜
 echo.
 echo %repo_change_confirm%
 echo %repo_change_confirm_2%
 echo %repo_change_confirm_3%
-:: Y¼ÌĞø£¬N»òÆäËû¼üÍË³ö¡£
+:: Yç»§ç»­ï¼ŒNæˆ–å…¶ä»–é”®é€€å‡ºã€‚
 SET /P INS= (Y/N): 
 If /I "%INS%"=="Y" echo. && goto nextchangemirror
 goto quit
 :nextchangemirror
-:: ´æÔÚ¾ÍÉ¾
+:: å­˜åœ¨å°±åˆ 
 if exist .\share\config\sourceimage.ini Del /f /s /q .\share\config\sourceimage.ini > nul
 echo %custom%> .\share\config\sourceimage.ini
 echo.
@@ -465,11 +465,11 @@ echo %custom%
 goto quit
 
 :error_repo
-:: Èí¼şÔ´²»¿ÉÓÃ¡£
+:: è½¯ä»¶æºä¸å¯ç”¨ã€‚
 echo %source_invalid%
 goto quit
 
-:: ¼ì²é¾µÏñÔ´
+:: æ£€æŸ¥é•œåƒæº
 :repo_check
 echo.
 echo %lang_onlinelist%: 
@@ -478,9 +478,9 @@ echo %source_url_label%:
 echo %full_source_url%
 goto quit
 
-:: °ü°²×°
+:: åŒ…å®‰è£…
 :installpackages
-:: --- µÚÒ»½×¶Î£ºÔªÊı¾İÌáÈ¡ ---
+:: --- ç¬¬ä¸€é˜¶æ®µï¼šå…ƒæ•°æ®æå– ---
 if "%package%"=="" goto error2
 echo %loading_metadata%
 if exist ".\metadata\*.*" (
@@ -491,21 +491,21 @@ if not exist "%Temp%\%package%.metadata" goto error3
 .\bin\unzip.exe "%Temp%\%package%.metadata" -d "%~dp0metadata" > nul
 del /f /q "%Temp%\%package%.metadata" > nul
 
-:: Ê¹ÓÃ sed ÌáÈ¡¹Ø¼ü±äÁ¿ (°üº¬ autorun)
+:: ä½¿ç”¨ sed æå–å…³é”®å˜é‡ (åŒ…å« autorun)
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[PackageName\]/{n;p}" .\metadata\metadata.sque') do @set "P_NAME=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[Version\]/{n;p}" .\metadata\metadata.sque') do @set "P_VER=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[OS\]/{n;p}" .\metadata\metadata.sque') do @set "P_OS=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[InstallDir\]/{n;p}" .\metadata\metadata.sque') do @set "P_INSTALLDIR=%%a"
-:: È¥³ı InstallDir ÖĞµÄÇ°µ¼·´Ğ±¸Ü
+:: å»é™¤ InstallDir ä¸­çš„å‰å¯¼åæ–œæ 
 if "%P_INSTALLDIR:~0,1%"=="\" set "P_INSTALLDIR=%P_INSTALLDIR:~1%"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[Autorun\]/{n;p}" .\metadata\metadata.sque') do @set "P_AUTORUN=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[DesktopShortcut\]/{n;p}" .\metadata\metadata.sque') do @set "P_LNK=%%a"
-:: È¥³ı DesktopShortcut ÖĞµÄÇ°µ¼·´Ğ±¸Ü
+:: å»é™¤ DesktopShortcut ä¸­çš„å‰å¯¼åæ–œæ 
 if "%P_LNK:~0,1%"=="\" set "P_LNK=%P_LNK:~1%"
-:: ¸ù¾İÓïÑÔÌáÈ¡¼ò½é
+:: æ ¹æ®è¯­è¨€æå–ç®€ä»‹
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[ProFile\]/{n;p}" .\metadata\metadata.sque') do @set "P_DESC=%%a"
 
-:: --- µÚ¶ş½×¶Î£ºHTA ½»»¥ ---
+:: --- ç¬¬äºŒé˜¶æ®µï¼šHTA äº¤äº’ ---
 set "P_ACTION=install"
 if /I "%autoyes%"=="-y" (
     set "INS=Y"
@@ -516,7 +516,7 @@ if /I "%autoyes%"=="-y" (
         if /I "%autoyes%"=="yes" (
             set "INS=Y"
         ) else (
-            :: Æô¶¯ HTA Ç°ÇåÀíÁÙÊ±·´À¡ÎÄ¼ş
+            :: å¯åŠ¨ HTA å‰æ¸…ç†ä¸´æ—¶åé¦ˆæ–‡ä»¶
             if exist "%Temp%\pier_choice.tmp" (
                 echo wscript.sleep 200 >%Temp%\Wait.vbs
                 start /wait %Temp%\Wait.vbs
@@ -528,7 +528,7 @@ if /I "%autoyes%"=="-y" (
                 del /f /q "%Temp%\pier_env.tmp" 2>nul
             )
 
-            :: Ğ´Èë»·¾³±äÁ¿µ½ÁÙÊ±ÎÄ¼ş£¨¼æÈİ XP£©
+            :: å†™å…¥ç¯å¢ƒå˜é‡åˆ°ä¸´æ—¶æ–‡ä»¶ï¼ˆå…¼å®¹ XPï¼‰
             echo (
                 echo P_PKGNAME=%P_NAME%
                 echo P_VERSION=%P_VER%
@@ -543,14 +543,14 @@ if /I "%autoyes%"=="-y" (
                 echo P_ACTION=install
             ) > "%Temp%\pier_env.tmp"
 
-            :: µÈ´ıÎÄ¼şĞ´ÈëÍê³É
+            :: ç­‰å¾…æ–‡ä»¶å†™å…¥å®Œæˆ
             echo wscript.sleep 200 >%Temp%\Wait.vbs
             start /wait %Temp%\Wait.vbs
 
-            :: Æô¶¯ HTA
+            :: å¯åŠ¨ HTA
             start /wait "" mshta "%~dp0share\module\install.hta"
 
-            :: µÈ´ı HTA Íê³ÉºóÔÙ¶ÁÈ¡½á¹û
+            :: ç­‰å¾… HTA å®Œæˆåå†è¯»å–ç»“æœ
             echo wscript.sleep 200 >%Temp%\Wait.vbs
             start /wait %Temp%\Wait.vbs
 
@@ -561,26 +561,26 @@ if /I "%autoyes%"=="-y" (
                 set "INS=N"
             )
 
-            :: ÇåÀí»·¾³±äÁ¿ÎÄ¼ş£¨Èç¹û»¹´æÔÚ£©
+            :: æ¸…ç†ç¯å¢ƒå˜é‡æ–‡ä»¶ï¼ˆå¦‚æœè¿˜å­˜åœ¨ï¼‰
             if exist "%Temp%\pier_env.tmp" del /f /q "%Temp%\pier_env.tmp" 2>nul
         )
     )
 )
 if /I "%INS%"=="N" goto quit
 
-:: ÇåÀí»·¾³±äÁ¿ÎÄ¼ş£¨Èç¹û»¹´æÔÚ£©
+:: æ¸…ç†ç¯å¢ƒå˜é‡æ–‡ä»¶ï¼ˆå¦‚æœè¿˜å­˜åœ¨ï¼‰
 if exist "%Temp%\pier_env.tmp" (
     del /f /q "%Temp%\pier_env.tmp" 2>nul
 )
 
-:: --- µÚÈı½×¶Î£ºÏÂÔØ°²×°°ü ---
+:: --- ç¬¬ä¸‰é˜¶æ®µï¼šä¸‹è½½å®‰è£…åŒ… ---
 echo %download_progress% %P_NAME%...
 
-:: ¶ÁÈ¡ÏÂÔØ URL ºÍ¿ì½İ·½Ê½
+:: è¯»å–ä¸‹è½½ URL å’Œå¿«æ·æ–¹å¼
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[URL\]/{n;p}" .\metadata\metadata.sque') do @set "packageurl=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[DesktopShortcut\]/{n;p}" .\metadata\metadata.sque') do @set "shortcut=%%a"
 
-:: ÏÂÔØ°²×°°ü
+:: ä¸‹è½½å®‰è£…åŒ…
 if exist "%Temp%\%package%.pie" (
     del /f /q "%Temp%\%package%.pie" > nul
 )
@@ -588,25 +588,25 @@ if exist "%Temp%\%package%.pie" (
 echo wscript.sleep 200 >%Temp%\Wait.vbs
 start /wait %Temp%\Wait.vbs
 
-:: ¼ì²éÏÂÔØÊÇ·ñ³É¹¦
+:: æ£€æŸ¥ä¸‹è½½æ˜¯å¦æˆåŠŸ
 if not exist "%Temp%\%package%.pie" (
     echo %error_package_not_exist%
     goto quit
 )
 
-:: --- µÚËÄ½×¶Î£ºÖ´ĞĞ°²×°Óë°²È«Éó¼Æ ---
+:: --- ç¬¬å››é˜¶æ®µï¼šæ‰§è¡Œå®‰è£…ä¸å®‰å…¨å®¡è®¡ ---
 echo %install_progress% %P_NAME%...
 if /I "%P_OS%"=="language" (
-    :: ÓïÑÔ°üÂß¼­£º±£»¤ zh-CN
+    :: è¯­è¨€åŒ…é€»è¾‘ï¼šä¿æŠ¤ zh-CN
     if /I "%package%"=="zh-CN" (echo %error_protected_lang% & goto quit)
     .\bin\unzip.exe -o "%Temp%\%package%.pie" -d ".\share\language\" > nul
     echo %language_installed_success%
 ) else (
-    :: ÆÕÍ¨ App Âß¼­£º½âÑ¹µ½¶ÔÓ¦Ä¿Â¼£¨Ê¹ÓÃ InstallDir£©
+    :: æ™®é€š App é€»è¾‘ï¼šè§£å‹åˆ°å¯¹åº”ç›®å½•ï¼ˆä½¿ç”¨ InstallDirï¼‰
     if not exist ".\app\%P_INSTALLDIR%\" mkdir ".\app\%P_INSTALLDIR%\"
     .\bin\unzip.exe -o "%Temp%\%package%.pie" -d ".\app\%P_INSTALLDIR%" > nul
 
-    :: °²È«Éó¼Æ£ºÈç¹û autorun °üº¬Î£ÏÕÖ¸ÁîÔòÀ¹½Ø²¢±¨´í
+    :: å®‰å…¨å®¡è®¡ï¼šå¦‚æœ autorun åŒ…å«å±é™©æŒ‡ä»¤åˆ™æ‹¦æˆªå¹¶æŠ¥é”™
     if not "%P_AUTORUN%"=="" (
         if /I not "%P_AUTORUN%"=="null" (
             findstr /i "format net\ user rd\ /s del\ /s C:\\" ".\app\%P_INSTALLDIR%\%P_AUTORUN%" | findstr /i /v "%~dp0app" >nul
@@ -619,13 +619,13 @@ if /I "%P_OS%"=="language" (
         )
     )
 
-    :: ´¦Àí×ÀÃæ¿ì½İ·½Ê½£º½« .lnk ÎÄ¼ş´Ó App ÎÄ¼ş¼ĞÒÆ¶¯µ½×ÀÃæ
+    :: å¤„ç†æ¡Œé¢å¿«æ·æ–¹å¼ï¼šå°† .lnk æ–‡ä»¶ä» App æ–‡ä»¶å¤¹ç§»åŠ¨åˆ°æ¡Œé¢
     if not "%P_LNK%"=="" (
         if /I not "%P_LNK%"=="null" (
             if exist ".\app\%P_INSTALLDIR%\%P_LNK%" (
-                :: ÒÆ¶¯¿ì½İ·½Ê½µ½×ÀÃæ
+                :: ç§»åŠ¨å¿«æ·æ–¹å¼åˆ°æ¡Œé¢
                 move /y ".\app\%P_INSTALLDIR%\%P_LNK%" "%userprofile%\Desktop\" > nul
-                :: ¼ì²éÊÇ·ñÒÆ¶¯³É¹¦
+                :: æ£€æŸ¥æ˜¯å¦ç§»åŠ¨æˆåŠŸ
                 if exist "%userprofile%\Desktop\%P_LNK%" (
                     echo %shortcut_created%%P_LNK%
                 )
@@ -638,46 +638,46 @@ if /I "%P_OS%"=="language" (
 goto quit
 
 :next
-:: --- [Â·¾¶ÖØ¹¹] ---
-:: ¶¯Ì¬ÉèÖÃ°²×°Ä¿Â¼µ½³ÌĞò¸ùÄ¿Â¼ÏÂµÄ app ÎÄ¼ş¼Ğ
+:: --- [è·¯å¾„é‡æ„] ---
+:: åŠ¨æ€è®¾ç½®å®‰è£…ç›®å½•åˆ°ç¨‹åºæ ¹ç›®å½•ä¸‹çš„ app æ–‡ä»¶å¤¹
 set "installdir=%~dp0app\%packagename%\"
 
 if exist "%Temp%\%installername%.pie" del /f /q "%Temp%\%installername%.pie" > nul
 echo %download_progress% %packagename%...
 
-:: ¶ÁÈ¡ÏÂÔØ URL ºÍ¿ì½İ·½Ê½
+:: è¯»å–ä¸‹è½½ URL å’Œå¿«æ·æ–¹å¼
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[URL\]/{n;p}" .\metadata\metadata.sque') do @set "packageurl=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[DesktopShortcut\]/{n;p}" .\metadata\metadata.sque') do @set "shortcut=%%a"
 
-:: ÏÂÔØ°²×°°ü
+:: ä¸‹è½½å®‰è£…åŒ…
 .\bin\uma-get.exe -q -P "%Temp%" --no-check-certificate %source%%packageurl% --show-progress
 echo %install_progress% %packagename%...
 
-:: --- [°²×°Âß¼­·Ö·¢] ---
+:: --- [å®‰è£…é€»è¾‘åˆ†å‘] ---
 if /I "%ossystem%"=="language" (
-    :: ÓïÑÔ°ü°²×°£ºÖ±½Ó½âÑ¹µ½ share\language
+    :: è¯­è¨€åŒ…å®‰è£…ï¼šç›´æ¥è§£å‹åˆ° share\language
     if /I "%package%"=="zh-CN" (echo %error_protected_lang% & goto quit)
     .\bin\unzip.exe -o "%Temp%\%package%.pie" -d ".\share\language\" > nul
     echo %language_installed_success%
 ) else (
-    :: ÆÕÍ¨Ó¦ÓÃ°²×°£º½âÑ¹µ½¸Õ²Å¶¨ÒåµÄ installdir
+    :: æ™®é€šåº”ç”¨å®‰è£…ï¼šè§£å‹åˆ°åˆšæ‰å®šä¹‰çš„ installdir
     if not exist "%installdir%" mkdir "%installdir%"
     .\bin\unzip.exe -o "%Temp%\%package%.pie" -d "%installdir%" > nul
     
-    :: --- [ºËĞÄ°²È«Éó¼Æ£º´¦Àí autorun] ---
+    :: --- [æ ¸å¿ƒå®‰å…¨å®¡è®¡ï¼šå¤„ç† autorun] ---
     if not "%p_autorun%"=="" (
-        :: È·±£Ä¿±ê½Å±¾È·Êµ´æÔÚ
+        :: ç¡®ä¿ç›®æ ‡è„šæœ¬ç¡®å®å­˜åœ¨
         if exist "%installdir%%p_autorun%" (
-            :: É¨ÃèÎ£ÏÕÖ¸Áî£º½ûÖ¹ format, net user, Ô½È¨É¾³ı, ÒÔ¼°¶Ô C:\ µÄÖ±½Ó²Ù×÷£¨ÅÅ³ıµ±Ç° app Ä¿Â¼£©
+            :: æ‰«æå±é™©æŒ‡ä»¤ï¼šç¦æ­¢ format, net user, è¶Šæƒåˆ é™¤, ä»¥åŠå¯¹ C:\ çš„ç›´æ¥æ“ä½œï¼ˆæ’é™¤å½“å‰ app ç›®å½•ï¼‰
             findstr /i "format net\ user rd\ /s del\ /s C:\\" "%installdir%%p_autorun%" | findstr /i /v "%~dp0app" >nul
             if !errorlevel! equ 0 (
-                :: Éó¼Æ·¢ÏÖ·çÏÕ£º´Ó lang.ini ¶ÁÈ¡±¨´íĞÅÏ¢
+                :: å®¡è®¡å‘ç°é£é™©ï¼šä» lang.ini è¯»å–æŠ¥é”™ä¿¡æ¯
                 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[Invalid_file_variable\]/{n;p}" %LANGUAGE_DIR%\lang.ini') do @set "err_audit=%%a"
                 echo !err_audit! : %p_autorun%
-                :: É¾³ı·çÏÕ½Å±¾ÒÔ¾øºó»¼£¬µ«°²×°µÄÎÄ¼ş±£Áô
+                :: åˆ é™¤é£é™©è„šæœ¬ä»¥ç»åæ‚£ï¼Œä½†å®‰è£…çš„æ–‡ä»¶ä¿ç•™
                 del /f /q "%installdir%%p_autorun%"
             ) else (
-                :: Éó¼ÆÍ¨¹ı£ºÇĞ»»ÖÁ°²×°Ä¿Â¼²¢°²È«Ö´ĞĞ
+                :: å®¡è®¡é€šè¿‡ï¼šåˆ‡æ¢è‡³å®‰è£…ç›®å½•å¹¶å®‰å…¨æ‰§è¡Œ
                 pushd "%installdir%"
                 call "%p_autorun%"
                 popd
@@ -685,7 +685,7 @@ if /I "%ossystem%"=="language" (
         )
     )
 
-    :: ´¦Àí×ÀÃæ¿ì½İ·½Ê½£º½« .lnk ÎÄ¼ş´Ó App ÎÄ¼ş¼ĞÒÆ¶¯µ½×ÀÃæ
+    :: å¤„ç†æ¡Œé¢å¿«æ·æ–¹å¼ï¼šå°† .lnk æ–‡ä»¶ä» App æ–‡ä»¶å¤¹ç§»åŠ¨åˆ°æ¡Œé¢
     if not "%shortcut%"=="" (
         if /I not "%shortcut%"=="null" (
             if exist "%installdir%%shortcut%" (
@@ -700,7 +700,7 @@ if /I "%ossystem%"=="language" (
 goto quit
 
 :removepackages
-:: --- µÚÒ»½×¶Î£ºÔªÊı¾İÏÂÔØÓëÌáÈ¡ ---
+:: --- ç¬¬ä¸€é˜¶æ®µï¼šå…ƒæ•°æ®ä¸‹è½½ä¸æå– ---
 if "%package%"=="" goto error2
 echo %loading_metadata%
 if exist ".\metadata\*.*" (
@@ -711,17 +711,17 @@ if not exist "%Temp%\%package%.metadata" goto error3
 .\bin\unzip.exe "%Temp%\%package%.metadata" -d "%~dp0metadata" > nul
 del /f /q "%Temp%\%package%.metadata" > nul
 
-:: Ê¹ÓÃ sed ÌáÈ¡¹Ø¼ü±äÁ¿£¨È·±£Óë°²×°Âß¼­±äÁ¿Ãû¶ÔÆë£©
+:: ä½¿ç”¨ sed æå–å…³é”®å˜é‡ï¼ˆç¡®ä¿ä¸å®‰è£…é€»è¾‘å˜é‡åå¯¹é½ï¼‰
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[Version\]/{n;p}" .\metadata\metadata.sque') do @set "packageversion=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[PackageName\]/{n;p}" .\metadata\metadata.sque') do @set "packagename=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[OS\]/{n;p}" .\metadata\metadata.sque') do @set "ossystem=%%a"
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[InstallDir\]/{n;p}" .\metadata\metadata.sque') do @set "P_INSTALLDIR=%%a"
-:: È¥³ı InstallDir ÖĞµÄÇ°µ¼·´Ğ±¸Ü
+:: å»é™¤ InstallDir ä¸­çš„å‰å¯¼åæ–œæ 
 if "%P_INSTALLDIR:~0,1%"=="\" set "P_INSTALLDIR=%P_INSTALLDIR:~1%"
-:: ¸ù¾İÓïÑÔÌáÈ¡¼ò½é
+:: æ ¹æ®è¯­è¨€æå–ç®€ä»‹
 for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[ProFile\]/{n;p}" .\metadata\metadata.sque') do @set "P_DESC=%%a"
 
-:: --- µÚ¶ş½×¶Î£ºUI È·ÈÏÂß¼­ ---
+:: --- ç¬¬äºŒé˜¶æ®µï¼šUI ç¡®è®¤é€»è¾‘ ---
 set "P_ACTION=uninstall"
 if /I "%autoyes%"=="-y" (
     set "INS=Y"
@@ -743,7 +743,7 @@ if /I "%autoyes%"=="-y" (
                 del /f /q "%Temp%\pier_env.tmp" 2>nul
             )
 
-            :: Ğ´Èë»·¾³±äÁ¿µ½ÁÙÊ±ÎÄ¼ş£¨¼æÈİ XP£©
+            :: å†™å…¥ç¯å¢ƒå˜é‡åˆ°ä¸´æ—¶æ–‡ä»¶ï¼ˆå…¼å®¹ XPï¼‰
             echo (
                 echo P_PKGNAME=%packagename%
                 echo P_VERSION=%packageversion%
@@ -758,14 +758,14 @@ if /I "%autoyes%"=="-y" (
                 echo P_ACTION=uninstall
             ) > "%Temp%\pier_env.tmp"
 
-            :: µÈ´ıÎÄ¼şĞ´ÈëÍê³É
+            :: ç­‰å¾…æ–‡ä»¶å†™å…¥å®Œæˆ
             echo wscript.sleep 200 >%Temp%\Wait.vbs
             start /wait %Temp%\Wait.vbs
 
-            :: µ÷ÓÃ HTA Ä£¿é
+            :: è°ƒç”¨ HTA æ¨¡å—
             start /wait "" mshta "%~dp0share\module\install.hta"
 
-            :: µÈ´ı HTA Íê³ÉºóÔÙ¶ÁÈ¡½á¹û
+            :: ç­‰å¾… HTA å®Œæˆåå†è¯»å–ç»“æœ
             echo wscript.sleep 200 >%Temp%\Wait.vbs
             start /wait %Temp%\Wait.vbs
 
@@ -776,19 +776,19 @@ if /I "%autoyes%"=="-y" (
                 set "INS=N"
             )
 
-            :: ÇåÀí»·¾³±äÁ¿ÎÄ¼ş£¨Èç¹û»¹´æÔÚ£©
+            :: æ¸…ç†ç¯å¢ƒå˜é‡æ–‡ä»¶ï¼ˆå¦‚æœè¿˜å­˜åœ¨ï¼‰
             if exist "%Temp%\pier_env.tmp" del /f /q "%Temp%\pier_env.tmp" 2>nul
         )
     )
 )
 if /I "%INS%"=="N" goto quit
 
-:: --- µÚÈı½×¶Î£ºÖ´ĞĞĞ¶ÔØÁ÷³Ì ---
+:: --- ç¬¬ä¸‰é˜¶æ®µï¼šæ‰§è¡Œå¸è½½æµç¨‹ ---
 echo %uninstall_progress% %packagename%...
 
-:: ·ÖÖ§ 1£ºÈç¹ûÊÇÓïÑÔ°üÂß¼­
+:: åˆ†æ”¯ 1ï¼šå¦‚æœæ˜¯è¯­è¨€åŒ…é€»è¾‘
 if /I "%ossystem%"=="language" (
-    :: Ç¿ÖÆ±£»¤ zh-CN
+    :: å¼ºåˆ¶ä¿æŠ¤ zh-CN
     if /I "%package%"=="zh-CN" (
         for /f "delims=" %%a in ('.\bin\sed.exe -n "/\[error_protected_lang\]/{n;p}" %LANGUAGE_DIR%\lang.ini') do @set "err_protect=%%a"
         echo !err_protect!
@@ -798,16 +798,16 @@ if /I "%ossystem%"=="language" (
     goto :uninstall_end
 )
 
-:: ·ÖÖ§ 2£ºÈç¹ûÊÇÆÕÍ¨ App Âß¼­
-:: ¶¯Ì¬¶¨Î»µ±Ç°µÄ°²×°Ä¿Â¼£¨Ê¹ÓÃ InstallDir£©
+:: åˆ†æ”¯ 2ï¼šå¦‚æœæ˜¯æ™®é€š App é€»è¾‘
+:: åŠ¨æ€å®šä½å½“å‰çš„å®‰è£…ç›®å½•ï¼ˆä½¿ç”¨ InstallDirï¼‰
 set "target_dir=%~dp0app\%P_INSTALLDIR%\"
 
-:: ÓÅÏÈÔËĞĞĞ¶ÔØ³ÌĞò£¨Èç¹û´æÔÚ£©
+:: ä¼˜å…ˆè¿è¡Œå¸è½½ç¨‹åºï¼ˆå¦‚æœå­˜åœ¨ï¼‰
 if exist "%target_dir%uninstall.exe" (
     start /wait "" "%target_dir%uninstall.exe"
 )
 
-:: ÎŞÂÛĞ¶ÔØ³ÌĞòÊÇ·ñ²ĞÁô£¬Ç¿ÖÆÇåÀíÎÄ¼ş¼Ğ
+:: æ— è®ºå¸è½½ç¨‹åºæ˜¯å¦æ®‹ç•™ï¼Œå¼ºåˆ¶æ¸…ç†æ–‡ä»¶å¤¹
 if exist "%target_dir%" (
     rd /s /q "%target_dir%"
 )
