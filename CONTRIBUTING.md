@@ -1,6 +1,8 @@
 # Contributing to Pier
 
-欢迎！Pier 是一个 AI 辅助开发的轻量级 Windows 包管理器。
+欢迎！Pier 是一个轻量级 Windows 包管理器。
+
+Pier 使用了 AI 辅助开发
 
 ## 🧭 项目定位
 
@@ -17,15 +19,18 @@
 | 📖 文档改进 | README、拼写、示例 |
 | 🧩 别名模板 | 提交到 pier-repo |
 | ⬆️ 包更新 | 更新软件源里的包版本 |
+| 📦 贡献包！ | 贡献软件包、元数据到 pier-repo |
+| 🧩 贡献翻译 | 贡献万国的元数据包、软件、文档的翻译！ |
 | 💡 Issue 讨论 | 提建议、报需求 |
 
 ## ❌ 不接受什么
 
 以下改动违背 Pier 的设计哲学，会被拒绝：
 
-- ❌ **替换 SQUE 为 JSON/YAML/XML** — SQUE 是我们自研的配置格式，专门为 XP 兼容设计，不加第三方依赖
+- ❌ **违反设计规范** — 
+  - 放弃 SQUE、引入 JSON/YAML/XML 等配置格式
 - ❌ **引入 .NET / MSVC 新运行时依赖** — 纯 Win32 API + C89/C90
-- ❌ **放弃 Windows XP 兼容** — 这是 Pier 的核心卖点
+- ❌ **放弃 Windows XP 兼容** — 目前仍需要支持 Windows XP
 
 ## 🚀 快速开始
 
@@ -41,7 +46,7 @@
 2. 从 `radical` 分支创建你的功能分支
 3. 修改代码
 4. 提交 PR 到 `radical` 分支
-5. 等待审核
+5. 等待审核！
 
 > radical 是开发分支，main 是稳定分支。
 > PR 合入 radical 后，经维护者测试再合并到 main。
