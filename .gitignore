@@ -30,3 +30,10 @@ scuts/
 tcc/
 mingw32/
 test/
+
+# Local scripts
+sync.sh
+sync-pier.bat
+src.zip
+src/libcurl.la
+src/libcurl.lai
