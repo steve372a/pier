@@ -1,8 +1,20 @@
 <div align="center">
 
-# Pier Package Installer 🦞
+<div align="center">
+  <img src="https://github.com/steve372a/steve372a/blob/main/2.svg" width="300">
+  <img src="https://github.com/steve372a/steve372a/blob/main/cat.svg" width="300">
+  <h1>Pier Package Installer</h1>
+  <img src="https://github.com/steve372a/steve372a/blob/34af5582e2e13447abab73d31d616f23b05f38b3/pier_newworld_cn.png" width="600">
+</div>
 
-**给老系统新的生命 — Windows XP/7/10/11 最轻量的包管理器**
+<p align="center" style="white-space: nowrap;">
+  <a href="README.md" style="margin: 0 40px;">
+    <img src="https://github.com/steve372a/steve372a/blob/9ac4fe356ef0a6036f96f6dcd85e7c6a725b44ef/cn.png" width="125" alt="中文">
+  </a>
+  <a href="README.en-US.md" style="margin: 0 40px;">
+    <img src="https://github.com/steve372a/steve372a/blob/9ac4fe356ef0a6036f96f6dcd85e7c6a725b44ef/en.png" width="125" alt="English">
+  </a>
+</p>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/Windows-XP%2F7%2F10%2F11-blue)](https://github.com/steve372a/pier)
