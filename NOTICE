@@ -1,0 +1,17 @@
+This project includes the following third-party binaries:
+
+- sed (GNU sed) - GPLv3 License
+  Copyright (C) Free Software Foundation, Inc.
+  License: https://www.gnu.org/licenses/gpl-3.0.html
+
+- unzip (Info-ZIP) - BSD-style License
+  Copyright (c) 1990-2008 Info-ZIP.
+  License: http://www.info-zip.org/license.html
+
+- uma-get (基于 wget) - GPLv3 License
+  Copyright (C) Free Software Foundation, Inc.
+  License: https://www.gnu.org/licenses/gpl-3.0.html
+
+- curl - Curl license
+  Copyright (c) 1996 - 2025, Daniel Stenberg, <daniel@haxx.se>, and many contributors.
+  License: https://curl.se/docs/copyright.html

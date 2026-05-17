@@ -1,0 +1,32 @@
+# Build artifacts
+*.exe
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.zip
+*.tar
+*.7z
+*.log
+*.tmp
+*.pdb
+*.exp
+*.ilk
+# Directories
+_unused/
+archive/
+bin/
+app/7zip/Lang/
+app/7zip/7-zip.chm
+app/7zip/*.sfx
+app/7zip/History.txt
+app/7zip/readme.txt
+# Editor
+.trae/
+metadata/
+share/
+scuts/
+tcc/
+mingw32/
+test/
