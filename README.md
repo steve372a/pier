@@ -55,7 +55,7 @@
 
 ## 🌍 无边界多语言
 
-Pier 自动识别你的系统语言，无需翻译器。无论你说中文、English、日本語、한국어、Español——界面、提示、包描述，**一切用你的母语展示**。
+Pier 里，无论你说中文、English、日本語、한국어、Español——界面、提示、包描述，**一切用你的母语展示**。
 
 ---
 
@@ -69,6 +69,9 @@ ffmpeg -i input.mp4 -c:v libx264 -preset fast -crf 23 output.mp4
 
 # Pier 方式
 pier o ffmpeg mp4 input.mp4 output.mp4
+
+# 意想不到的垫片...
+fm mp4 input.mp4 output.mp4
 ```
 
 **一切都可以快速封装。** 任何复杂的命令行，都可以被封装成一个好记的"别名"。无论是 `qemu`、`ffmpeg`，还是你自己的工作脚本——一次写好，终身受用。
