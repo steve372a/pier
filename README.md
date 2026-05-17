@@ -59,6 +59,10 @@
 
 Pier 里，无论你说中文、English、日本語、한국어、Español——界面、提示、包描述，**一切用你的母语展示**。
 
+<div align="center">
+<img src="https://github.com/steve372a/steve372a/blob/185b5026b9e19a17618564b54bc33e9ecc3a651d/diandianearth.png" alt="diandianearth.png" width="100">
+</div>
+
 ---
 
 ## 🪄 Pier O — 消灭命令参数
@@ -86,6 +90,10 @@ pier o user/package
 
 > **Pier O 不是简化命令，是消灭命令。**
 > 你记住的，不再是参数，而是你想做什么。
+
+<div align="center">
+<img src="https://github.com/steve372a/steve372a/blob/d24cd56bc94603d110d073b61457ceec23c531af/diandianmagic.png" alt="diandianearth.png" width="100">
+</div>
 
 ---
 
