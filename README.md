@@ -1,8 +1,8 @@
 <div align="center">
 
 <div align="center">
-  <img src="https://github.com/steve372a/steve372a/blob/main/2.svg" width="300">
-  <img src="https://github.com/steve372a/steve372a/blob/main/cat.svg" width="300">
+  <img src="https://github.com/steve372a/steve372a/blob/main/2.svg" width="200">
+  <img src="https://github.com/steve372a/steve372a/blob/main/cat.svg" width="200">
   <h1>Pier Package Installer</h1>
   <img src="https://github.com/steve372a/steve372a/blob/34af5582e2e13447abab73d31d616f23b05f38b3/pier_newworld_cn.png" width="600">
 </div>
