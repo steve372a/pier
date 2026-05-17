@@ -50,6 +50,8 @@
 | `pier list` | 查看所有可用软件 | `pier list` |
 | `pier sources` | 管理软件源 | `pier sources` |
 | `pier setlang <语言>` | 切换界面语言 | `pier sl zh-CN` |
+| `pier sque check` | 检查文件 SQUE Script 语法 | `pier sque check <文件路径>` |
+| `pier updpath` | 更新注册表永久 PATH | `pier updpath` |
 
 ---
 
