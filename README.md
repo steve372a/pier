@@ -25,9 +25,9 @@
 
 ---
 
-## ✨ 亮点
+## ✨ 速看
 
-| 🚀 一行命令装软件 | 💾 XP/7 完美兼容 | 🧠 别名生态 · 告别背参数 |
+| 🚀 一行命令装软件 | 💾 XP/7 完美兼容 | 🧠 别名生态！ |
 |---|---|---|
 | `pier install notepadplusplus` | 工控机、老电脑、内网系统 | `pier o ffmpeg mp4 input.mp4 output.mp4` |
 
@@ -86,7 +86,7 @@ pier o user/package
 
 ## 💪 兼容性
 
-- **Windows XP Service Pack 3 及以上**（v2.2.0 在 XP SP3 实测正常）
+- **Windows XP Service Pack 3 及以上**（v2.2.0 在 XP SP3 实测正常，XPSP1 也可以尝试。）
 - Windows 7 / 8 / 10 / 11
 - 针对老旧运维环境进行了核心兼容性优化
 
@@ -100,6 +100,7 @@ pier o user/package
 | `unzip.exe` | Info-ZIP License |
 | `uma-get(wget).exe` | GPL License |
 | `7za.exe` | LGPL License |
+| `LIBCURL` | CURL License |
 
 详情参见 Release 中的 `NOTICE` 文件。
 
@@ -118,7 +119,7 @@ pier o user/package
 
 ## 🤝 贡献
 
-Pier 完全由 AI 辅助开发，欢迎一切形式的贡献：
+Pier 完全由 AI 辅助开发，为此，我写了个手册，帮助你彻底认识 Pier Package Installer，欢迎一切形式的贡献：
 
 - 💡 提建议 → [Issues](https://github.com/steve372a/pier/issues)
 - 🐛 报 Bug → [Bug Report](https://github.com/steve372a/pier/issues/new)
