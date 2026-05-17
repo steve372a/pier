@@ -55,8 +55,7 @@ Pier 使用了 AI 辅助开发
 
 - C89/C90 标准
 - 纯 Windows API（无 .NET / CRT 新版本依赖）
-- 函数命名：`snake_case`
-- 缩进：4 空格
+- 欢迎重写！
 
 ## ⚖️ License
 
