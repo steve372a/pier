@@ -2,7 +2,7 @@
 
 欢迎！Pier 是一个轻量级 Windows 包管理器。
 
-Pier 使用了 AI 辅助开发
+Pier 使用了 AI 辅助开发（CODEX+TRAE）
 
 ## 🧭 项目定位
 
