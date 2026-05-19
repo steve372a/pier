@@ -146,4 +146,5 @@ Pier 完全由 AI 辅助开发，为此，我写了个手册，帮助你彻底�
 
 [⭐ Star](https://github.com/steve372a/pier) · [📥 下载](https://github.com/steve372a/pier/releases) · [🌐 官网](https://steve372a.github.io/pier)
 
+<img src="https://github.com/steve372a/steve372a/blob/2914a2e8e3e7fc94f7869af8061ae73aefbaf19e/pipicry.png" width="100">
 </div>
