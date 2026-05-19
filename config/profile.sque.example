@@ -1,0 +1,39 @@
+; profile.sque - 多语言配置文件示例
+; 格式: key: value（冒号后建议加一个空格，但不是必须）
+; 可本地化字段：PackageName, ProFile, Author, Distributor
+
+[ja-JP]
+PackageName: 7-Zip
+ProFile: Windows用のファイルアーカイバ。高圧縮率の圧縮・解凍ソフト。
+Author: Igor Pavlov
+Distributor: Sanakaprix
+
+[ko-KR]
+PackageName: 7-Zip
+ProFile: Windows용 파일 압축 프로그램. 높은 압축률을 제공합니다.
+Author: Igor Pavlov
+Distributor: Sanakaprix
+
+[fr-FR]
+PackageName: 7-Zip
+ProFile: Un compresseur de fichiers pour Windows avec un taux de compression élevé.
+Author: Igor Pavlov
+Distributor: Sanakaprix
+
+[de-DE]
+PackageName: 7-Zip
+ProFile: Ein Dateiarchivierer für Windows mit hoher Kompressionsrate.
+Author: Igor Pavlov
+Distributor: Sanakaprix
+
+[ru-RU]
+PackageName: 7-Zip
+ProFile: Архиватор файлов для Windows с высокой степенью сжатия.
+Author: Igor Pavlov
+Distributor: Sanakaprix
+
+[es-ES]
+PackageName: 7-Zip
+ProFile: Un archivador de archivos para Windows con alta tasa de compresión.
+Author: Igor Pavlov
+Distributor: Sanakaprix

@@ -50,10 +50,15 @@ void vecho_line(const char *format, ...);
 int confirm_prompt(const char *message);
 int execute_tool(const char *tool_name, const char *args);
 
+/* UTF-8 conversion helpers */
+int is_valid_utf8(const unsigned char *str);
+void utf8_to_console_cp(char *str, int max_len);
+
 /* Command handlers */
 int cmd_install(int argc, char *argv[]);
 int cmd_remove(int argc, char *argv[]);
 int cmd_search(int argc, char *argv[]);
+int cmd_info(int argc, char *argv[]);
 int cmd_list(int argc, char *argv[]);
 int cmd_open(int argc, char *argv[]);
 int cmd_sources(int argc, char *argv[]);
@@ -148,13 +153,83 @@ int load_language_strings(const char *lang_dir) {
 }
 
 /* ============================================================
- * Get language string by key
+ * Check if string is valid UTF-8
+ * Returns 1 if valid UTF-8, 0 otherwise
+ * ============================================================ */
+int is_valid_utf8(const unsigned char *str) {
+    int i = 0;
+    while (str[i]) {
+        if (str[i] < 0x80) {
+            i++;
+        } else if ((str[i] & 0xE0) == 0xC0 && str[i+1]) {
+            if ((str[i+1] & 0xC0) != 0x80) return 0;
+            i += 2;
+        } else if ((str[i] & 0xF0) == 0xE0 && str[i+1] && str[i+2]) {
+            if ((str[i+1] & 0xC0) != 0x80) return 0;
+            if ((str[i+2] & 0xC0) != 0x80) return 0;
+            i += 3;
+        } else if ((str[i] & 0xF8) == 0xF0 && str[i+1] && str[i+2] && str[i+3]) {
+            if ((str[i+1] & 0xC0) != 0x80) return 0;
+            if ((str[i+2] & 0xC0) != 0x80) return 0;
+            if ((str[i+3] & 0xC0) != 0x80) return 0;
+            i += 4;
+        } else {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+/* ============================================================
+ * Convert UTF-8 string to console code page (in-place)
+ * ============================================================ */
+void utf8_to_console_cp(char *str, int max_len) {
+    wchar_t *wide_str;
+    char *out_buf;
+    int wide_len, out_len;
+    UINT console_cp;
+
+    if (!str || !str[0]) return;
+    if (!is_valid_utf8((const unsigned char *)str)) return;
+
+    console_cp = GetConsoleOutputCP();
+    if (console_cp == 65001) return;  /* Already UTF-8 console */
+
+    wide_len = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
+    if (wide_len <= 0) return;
+
+    wide_str = (wchar_t *)malloc(wide_len * sizeof(wchar_t));
+    if (!wide_str) return;
+
+    MultiByteToWideChar(CP_UTF8, 0, str, -1, wide_str, wide_len);
+
+    out_len = WideCharToMultiByte(console_cp, 0, wide_str, -1, NULL, 0, NULL, NULL);
+    if (out_len > 0 && out_len <= max_len) {
+        out_buf = (char *)malloc(out_len);
+        if (out_buf) {
+            WideCharToMultiByte(console_cp, 0, wide_str, -1, out_buf, out_len, NULL, NULL);
+            strncpy(str, out_buf, max_len - 1);
+            str[max_len - 1] = '\0';
+            free(out_buf);
+        }
+    }
+
+    free(wide_str);
+}
+
+/* ============================================================
+ * Get language string by key (with UTF-8 to console CP conversion)
+ * Uses static buffer to avoid modifying the original value
  * ============================================================ */
 const char *get_lang(const char *key) {
     int i;
+    static char converted_value[MAX_LINE];
     for (i = 0; i < g_lang_count; i++) {
         if (strcmp(g_lang_table[i].key, key) == 0) {
-            return g_lang_table[i].value;
+            strncpy(converted_value, g_lang_table[i].value, MAX_LINE - 1);
+            converted_value[MAX_LINE - 1] = '\0';
+            utf8_to_console_cp(converted_value, MAX_LINE);
+            return converted_value;
         }
     }
     return key;
@@ -415,6 +490,27 @@ int cmd_search(int argc, char *argv[]) {
     snprintf(args, sizeof(args),
              "search \"%s\" \"%s\" \"%s\" \"%s\"",
              g_pier_root, g_language_dir, g_source_url, argv[2]);
+
+    return execute_tool("pier-pkg", args);
+}
+
+/* ============================================================
+ * Command: info
+ * ============================================================ */
+int cmd_info(int argc, char *argv[]) {
+    char args[MAX_CMD_LEN];
+    char full_source_url[MAX_PATH_LEN];
+
+    if (argc < 3) {
+        printf("%s\n", get_lang("error_no_package_info"));
+        return 2;
+    }
+
+    snprintf(full_source_url, sizeof(full_source_url), "%s/sources", g_source_url);
+
+    snprintf(args, sizeof(args),
+             "info \"%s\" \"%s\" \"%s\" \"%s\"",
+             g_pier_root, g_language_dir, full_source_url, argv[2]);
 
     return execute_tool("pier-pkg", args);
 }
@@ -834,13 +930,24 @@ int cmd_help(int argc, char *argv[]) {
     char help_file[MAX_PATH_LEN];
     FILE *fp;
     char line[MAX_LINE];
+    char *converted_line;
 
     snprintf(help_file, sizeof(help_file), "%s\\help.lang", g_language_dir);
 
     fp = fopen(help_file, "r");
     if (fp) {
         while (fgets(line, sizeof(line), fp) != NULL) {
-            printf("%s", line);
+            /* Remove trailing newline for conversion */
+            int len = (int)strlen(line);
+            if (len > 0 && (line[len-1] == '\n' || line[len-1] == '\r')) {
+                line[len-1] = '\0';
+                if (len > 1 && line[len-2] == '\r') {
+                    line[len-2] = '\0';
+                }
+            }
+            /* Convert UTF-8 to console CP in place */
+            utf8_to_console_cp(line, MAX_LINE);
+            printf("%s\n", line);
         }
         fclose(fp);
     } else {
@@ -986,6 +1093,8 @@ int main(int argc, char *argv[]) {
         ret = cmd_remove(argc, argv);
     } else if (strcmp(argv[1], "search") == 0) {
         ret = cmd_search(argc, argv);
+    } else if (strcmp(argv[1], "info") == 0) {
+        ret = cmd_info(argc, argv);
     } else if (strcmp(argv[1], "list") == 0) {
         ret = cmd_list(argc, argv);
     } else if (strcmp(argv[1], "o") == 0) {

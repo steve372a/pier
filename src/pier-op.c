@@ -44,6 +44,7 @@ int parse_alias_touse(const char *alias_file, char *package_name, int package_na
 int extract_alias_section(const char *alias_file, const char *alias_name, char *program, int program_size);
 int extract_defaultopen(const char *metadata_file, const char *installdir, const char *pier_root, char *program_path, int program_path_size);
 void build_and_execute(const char *program_path, const char *alias_template, int argc, char *argv[], int user_arg_start);
+int run_vecho(const char *pier_root, const char *message);
 void replace_placeholders(const char *template, char **user_args, int user_arg_count, int *used_args, char *output, int output_size);
 void trim_whitespace(char *str);
 void extract_filename(char *str);
@@ -73,10 +74,13 @@ void build_wget_proxy_opts(char *buf, int buf_size) {
     buf[0] = '\0';
     http_proxy = getenv("http_proxy");
     if (http_proxy && http_proxy[0]) {
-        snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e http_proxy=%s", http_proxy);
+        snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e use_proxy=on -e http_proxy=%s", http_proxy);
     }
     https_proxy = getenv("https_proxy");
     if (https_proxy && https_proxy[0]) {
+        if (buf[0] == '\0') {
+            snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e use_proxy=on");
+        }
         snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e https_proxy=%s", https_proxy);
     }
 }
@@ -104,6 +108,29 @@ void init_lang_strings(void) {
     read_lang_string("open_alias_not_found", g_open_alias_not_found_template, sizeof(g_open_alias_not_found_template));
     read_lang_string("open_alias_touse_error", g_open_alias_touse_error, sizeof(g_open_alias_touse_error));
     read_lang_string("open_alias_syntax_error", g_open_alias_syntax_error, sizeof(g_open_alias_syntax_error));
+}
+
+int run_vecho(const char *pier_root, const char *message) {
+    char exe_path[MAX_PATH_LEN];
+    char cmdline[MAX_CMD_LEN];
+    STARTUPINFOA si;
+    PROCESS_INFORMATION pi;
+
+    snprintf(exe_path, sizeof(exe_path), "%s\\bin\\vecho.exe", pier_root);
+    snprintf(cmdline, sizeof(cmdline), "\"%s\" %s", exe_path, message);
+
+    memset(&si, 0, sizeof(si));
+    si.cb = sizeof(si);
+    memset(&pi, 0, sizeof(pi));
+
+    if (!CreateProcessA(exe_path, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
+        return 0;
+    }
+
+    WaitForSingleObject(pi.hProcess, INFINITE);
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
+    return 1;
 }
 
 /* Main function */
@@ -195,9 +222,7 @@ int main(int argc, char *argv[]) {
             
             /* Download alias template using alias_source */
             if (!download_alias_template(lang_dir, alias_source, package, alias_cache_dir, alias_file, sizeof(alias_file))) {
-                char vecho_cmd[MAX_CMD_LEN];
-                snprintf(vecho_cmd, sizeof(vecho_cmd), "%s\\bin\\vecho.exe %s", pier_root, g_open_alias_not_found_template);
-                system(vecho_cmd);
+                run_vecho(pier_root, g_open_alias_not_found_template);
                 return 1;
             }
         }
@@ -231,8 +256,8 @@ int main(int argc, char *argv[]) {
             char vecho_cmd[MAX_CMD_LEN];
             printf("%s\n", g_open_metadata_error);
             /* Use vecho to highlight the install command */
-            snprintf(vecho_cmd, sizeof(vecho_cmd), "%s\\bin\\vecho.exe %s $brightyellow$pier install %s$write$", pier_root, g_open_alias_install_hint, actual_package);
-            system(vecho_cmd);
+            snprintf(vecho_cmd, sizeof(vecho_cmd), "%s $brightyellow$pier install %s$write$", g_open_alias_install_hint, actual_package);
+            run_vecho(pier_root, vecho_cmd);
             return 1;
         }
         
@@ -351,8 +376,8 @@ int main(int argc, char *argv[]) {
                 char vecho_cmd[MAX_CMD_LEN];
                 printf("%s %s\n", g_open_package_not_found, actual_package);
                 /* Use vecho to highlight the install command */
-                snprintf(vecho_cmd, sizeof(vecho_cmd), "%s\\bin\\vecho.exe %s $brightyellow$pier install %s$write$", pier_root, g_open_alias_install_hint, actual_package);
-                system(vecho_cmd);
+                snprintf(vecho_cmd, sizeof(vecho_cmd), "%s $brightyellow$pier install %s$write$", g_open_alias_install_hint, actual_package);
+                run_vecho(pier_root, vecho_cmd);
                 return 1;
             }
             
@@ -380,8 +405,8 @@ int main(int argc, char *argv[]) {
                     char vecho_cmd[MAX_CMD_LEN];
                     printf("%s %s\n", g_open_package_not_found, actual_package);
                     /* Use vecho to highlight the install command */
-                    snprintf(vecho_cmd, sizeof(vecho_cmd), "%s\\bin\\vecho.exe %s $brightyellow$pier install %s$write$", pier_root, g_open_alias_install_hint, actual_package);
-                    system(vecho_cmd);
+                    snprintf(vecho_cmd, sizeof(vecho_cmd), "%s $brightyellow$pier install %s$write$", g_open_alias_install_hint, actual_package);
+                    run_vecho(pier_root, vecho_cmd);
                     return 1;
                 }
             }
@@ -861,8 +886,7 @@ void build_and_execute(const char *program_path, const char *alias_template, int
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
     } else {
-        /* Fallback to system() */
-        system(cmd);
+        printf("error: failed to start program (error: %lu)\n", GetLastError());
     }
 }
 

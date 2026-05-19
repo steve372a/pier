@@ -1,7 +1,7 @@
 /*
  * pier-ver.c - Package Installer Version Checker
  * 检查远程版本并提示更新
- * XP兼容，GBK编码
+ * XP兼容，UTF-8支持
  */
 
 #include <stdio.h>
@@ -14,17 +14,102 @@
 #define MAX_CMD_LEN 2048
 #define VER_URL "https://steve372a.github.io/pier/ver.sque"
 
+/* UTF-8 conversion helpers */
+static int is_valid_utf8(const unsigned char *str) {
+    int i = 0;
+    while (str[i]) {
+        if (str[i] < 0x80) {
+            i++;
+        } else if ((str[i] & 0xE0) == 0xC0 && str[i+1]) {
+            if ((str[i+1] & 0xC0) != 0x80) return 0;
+            i += 2;
+        } else if ((str[i] & 0xF0) == 0xE0 && str[i+1] && str[i+2]) {
+            if ((str[i+1] & 0xC0) != 0x80) return 0;
+            if ((str[i+2] & 0xC0) != 0x80) return 0;
+            i += 3;
+        } else if ((str[i] & 0xF8) == 0xF0 && str[i+1] && str[i+2] && str[i+3]) {
+            if ((str[i+1] & 0xC0) != 0x80) return 0;
+            if ((str[i+2] & 0xC0) != 0x80) return 0;
+            if ((str[i+3] & 0xC0) != 0x80) return 0;
+            i += 4;
+        } else {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+static void utf8_to_console_cp(char *str, int max_len) {
+    wchar_t *wide_str;
+    char *out_buf;
+    int wide_len, out_len;
+    UINT console_cp;
+
+    if (!str || !str[0]) return;
+    if (!is_valid_utf8((const unsigned char *)str)) return;
+
+    console_cp = GetConsoleOutputCP();
+    if (console_cp == 65001) return;
+
+    wide_len = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
+    if (wide_len <= 0) return;
+
+    wide_str = (wchar_t *)malloc(wide_len * sizeof(wchar_t));
+    if (!wide_str) return;
+
+    MultiByteToWideChar(CP_UTF8, 0, str, -1, wide_str, wide_len);
+
+    out_len = WideCharToMultiByte(console_cp, 0, wide_str, -1, NULL, 0, NULL, NULL);
+    if (out_len > 0 && out_len <= max_len) {
+        out_buf = (char *)malloc(out_len);
+        if (out_buf) {
+            WideCharToMultiByte(console_cp, 0, wide_str, -1, out_buf, out_len, NULL, NULL);
+            strncpy(str, out_buf, max_len - 1);
+            str[max_len - 1] = '\0';
+            free(out_buf);
+        }
+    }
+
+    free(wide_str);
+}
+
 void build_wget_proxy_opts(char *buf, int buf_size) {
     char *http_proxy, *https_proxy;
     buf[0] = '\0';
     http_proxy = getenv("http_proxy");
     if (http_proxy && http_proxy[0]) {
-        snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e http_proxy=%s", http_proxy);
+        snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e use_proxy=on -e http_proxy=%s", http_proxy);
     }
     https_proxy = getenv("https_proxy");
     if (https_proxy && https_proxy[0]) {
+        if (buf[0] == '\0') {
+            snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e use_proxy=on");
+        }
         snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e https_proxy=%s", https_proxy);
     }
+}
+
+int run_vecho(const char *pier_root, const char *message) {
+    char exe_path[MAX_PATH_LEN];
+    char cmdline[MAX_CMD_LEN];
+    STARTUPINFOA si;
+    PROCESS_INFORMATION pi;
+
+    snprintf(exe_path, sizeof(exe_path), "%s\\bin\\vecho.exe", pier_root);
+    snprintf(cmdline, sizeof(cmdline), "\"%s\" %s", exe_path, message);
+
+    memset(&si, 0, sizeof(si));
+    si.cb = sizeof(si);
+    memset(&pi, 0, sizeof(pi));
+
+    if (!CreateProcessA(exe_path, cmdline, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
+        return 0;
+    }
+
+    WaitForSingleObject(pi.hProcess, INFINITE);
+    CloseHandle(pi.hProcess);
+    CloseHandle(pi.hThread);
+    return 1;
 }
 
 /* 获取程序所在目录 */
@@ -70,6 +155,7 @@ int get_lang_value(const char *lang_file, const char *section, char *output, int
             /* 找到字段后的下一行就是值 */
             strncpy(output, line, output_size - 1);
             output[output_size - 1] = '\0';
+            utf8_to_console_cp(output, output_size);  /* UTF-8 to console CP */
             fclose(fp);
             return 0;
         }
@@ -365,9 +451,9 @@ int compare_version(const char *ver1, const char *ver2) {
 /* 输出高亮版本号 */
 void print_highlight_ver(const char *pier_root, const char *ver) {
     /* 直接调用 vecho 显示带颜色的版本号 */
-    char cmd[256];
-    snprintf(cmd, sizeof(cmd), "%s\\bin\\vecho.exe $brightyellow$%s$write$", pier_root, ver);
-    system(cmd);
+    char message[256];
+    snprintf(message, sizeof(message), "$brightyellow$%s$write$", ver);
+    run_vecho(pier_root, message);
 }
 
 /* 主函数 */
@@ -452,8 +538,8 @@ int main(int argc, char *argv[]) {
             /* 读取 [version_check_update] */
             if (get_lang_value(lang_file, "version_check_update", lang_value, sizeof(lang_value)) == 0) {
                 /* 合并 [version_check_update] 和版本号一起输出 */
-                snprintf(vecho_cmd, sizeof(vecho_cmd), "%s\\bin\\vecho.exe %s$brightyellow$%s$write$", pier_root, lang_value, latest_ver);
-                system(vecho_cmd);
+                snprintf(vecho_cmd, sizeof(vecho_cmd), "%s$brightyellow$%s$write$", lang_value, latest_ver);
+                run_vecho(pier_root, vecho_cmd);
             } else {
                 /* 如果没有 [version_check_update]，只显示版本号 */
                 print_highlight_ver(pier_root, latest_ver);
@@ -461,8 +547,8 @@ int main(int argc, char *argv[]) {
             
             /* 读取 [version_check_suffix] */
             if (get_lang_value(lang_file, "version_check_suffix", lang_value, sizeof(lang_value)) == 0 && lang_value[0] != '\0') {
-                snprintf(vecho_cmd, sizeof(vecho_cmd), "%s\\bin\\vecho.exe %s", pier_root, lang_value);
-                system(vecho_cmd);
+                snprintf(vecho_cmd, sizeof(vecho_cmd), "%s", lang_value);
+                run_vecho(pier_root, vecho_cmd);
             }
         }
         
@@ -487,13 +573,12 @@ int main(int argc, char *argv[]) {
                         strncpy(processed_value, temp, sizeof(processed_value) - 1);
                         processed_value[sizeof(processed_value) - 1] = '\0';
                     }
-                    snprintf(vecho_cmd, sizeof(vecho_cmd), 
-                             "%s\\bin\\vecho.exe %s", pier_root, processed_value);
+                    snprintf(vecho_cmd, sizeof(vecho_cmd), "%s", processed_value);
                 } else {
-                    snprintf(vecho_cmd, sizeof(vecho_cmd), 
-                             "%s\\bin\\vecho.exe $brightred$强制更新要求：$write$您的版本过低，请立即更新！", pier_root);
+                    snprintf(vecho_cmd, sizeof(vecho_cmd),
+                             "$brightred$强制更新要求：$write$您的版本过低，请立即更新！");
                 }
-                system(vecho_cmd);
+                run_vecho(pier_root, vecho_cmd);
                 printf("\n");
                 
                 /* 复制 pier-upd.exe 到 temp 并调用 */
@@ -562,16 +647,16 @@ int main(int argc, char *argv[]) {
                 char vecho_cmd[1024];
                 /* 读取 [version_check_minver] */
                 if (get_lang_value(lang_file, "version_check_minver", lang_value, sizeof(lang_value)) == 0) {
-                    snprintf(vecho_cmd, sizeof(vecho_cmd), "%s\\bin\\vecho.exe %s (>=", pier_root, lang_value);
-                    system(vecho_cmd);
+                    snprintf(vecho_cmd, sizeof(vecho_cmd), "%s (>=", lang_value);
+                    run_vecho(pier_root, vecho_cmd);
                 }
                 
                 print_highlight_ver(pier_root, min_ver);
                 
                 /* 读取 [version_check_minver_suffix] */
                 if (get_lang_value(lang_file, "version_check_minver_suffix", lang_value, sizeof(lang_value)) == 0) {
-                    snprintf(vecho_cmd, sizeof(vecho_cmd), "%s\\bin\\vecho.exe )%s", pier_root, lang_value);
-                    system(vecho_cmd);
+                    snprintf(vecho_cmd, sizeof(vecho_cmd), ")%s", lang_value);
+                    run_vecho(pier_root, vecho_cmd);
                 }
             }
         }

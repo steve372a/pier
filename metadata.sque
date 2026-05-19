@@ -1,0 +1,43 @@
+[PackageName]
+LocalSend
+
+[Version]
+1.17.0
+
+[OS]
+XP
+
+[InstallerName]
+localsend
+
+[URL]
+localsend-{version}.pie
+
+[ProFile]
+LocalSend is a file transfer tool designed for use within a local area network (LAN).
+
+[Author]
+Tien Do Nam
+
+[Distributor]
+Sanakaprix
+
+[Notice]
+LocalSend 采用 Apache License 2.0 开源许可证。
+您可以免费使用、修改和分发本软件，但须保留原始版权声明，并明确标注任何修改内容。
+本软件按“原样”提供，不附带任何明示或暗示的担保。
+::end
+
+[DefaultOpen]
+localsend_app.exe
+::end
+
+[Alias]
+::end
+
+[HASH]
+704eb792748e87081b19139bc039597ee55eb8525e2ad8eabc06df2e514842cf
+
+[PackageSize]
+17.3 MB
+

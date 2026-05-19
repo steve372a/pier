@@ -261,6 +261,10 @@ char g_str_search_available[MAX_LINE];
 char g_str_search_not_found[MAX_LINE];
 char g_str_search_download_failed[MAX_LINE];
 
+/* Info command strings */
+char g_str_info_alias_label[MAX_LINE];
+char g_str_error_no_package_info[MAX_LINE];
+
 /* Package info */
 typedef struct {
     char name[MAX_NAME];
@@ -295,10 +299,13 @@ void build_wget_proxy_opts(char *buf, int buf_size) {
     buf[0] = '\0';
     http_proxy = getenv("http_proxy");
     if (http_proxy && http_proxy[0]) {
-        snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e http_proxy=%s", http_proxy);
+        snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e use_proxy=on -e http_proxy=%s", http_proxy);
     }
     https_proxy = getenv("https_proxy");
     if (https_proxy && https_proxy[0]) {
+        if (buf[0] == '\0') {
+            snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e use_proxy=on");
+        }
         snprintf(buf + strlen(buf), buf_size - strlen(buf), " -e https_proxy=%s", https_proxy);
     }
 }
@@ -677,6 +684,10 @@ void load_language(void) {
     read_lang_string("search_available", g_str_search_available, sizeof(g_str_search_available));
     read_lang_string("search_not_found", g_str_search_not_found, sizeof(g_str_search_not_found));
     read_lang_string("search_download_failed", g_str_search_download_failed, sizeof(g_str_search_download_failed));
+
+    /* Info strings */
+    read_lang_string("alias_display", g_str_info_alias_label, sizeof(g_str_info_alias_label));
+    read_lang_string("error_no_package_info", g_str_error_no_package_info, sizeof(g_str_error_no_package_info));
 }
 
 void get_architecture(int index) {
@@ -1686,6 +1697,7 @@ int remove_package(int index) {
 int main(int argc, char *argv[]) {
     int i;
     int is_install = 0;
+    int is_info = 0;
     
     if (argc < 2) {
         fprintf(stderr, "pier-pkg: install|remove|search <args...>\n");
@@ -1703,17 +1715,47 @@ int main(int argc, char *argv[]) {
             return 1;
         }
         return search_packages(argv[2], argv[3], argv[4], argv[5]);
+    } else if (_stricmp(argv[1], "info") == 0) {
+        if (argc < 6) {
+            fprintf(stderr, "pier-pkg: info <PIER_ROOT> <LANGUAGE_DIR> <source_url> <package>\n");
+            return 1;
+        }
+        is_info = 1;
     } else {
         fprintf(stderr, "pier-pkg: unknown command %s\n", argv[1]);
         return 1;
     }
     
+    if (is_info) {
+        strncpy(g_pier_root, argv[2], sizeof(g_pier_root) - 1);
+        g_pier_root[sizeof(g_pier_root) - 1] = '\0';
+        
+        strncpy(g_language_dir, argv[3], sizeof(g_language_dir) - 1);
+        g_language_dir[sizeof(g_language_dir) - 1] = '\0';
+        
+        {
+            char *last_slash = strrchr(g_language_dir, '\\');
+            if (!last_slash) last_slash = strrchr(g_language_dir, '/');
+            if (last_slash) {
+                strncpy(g_current_lang, last_slash + 1, sizeof(g_current_lang) - 1);
+                g_current_lang[sizeof(g_current_lang) - 1] = '\0';
+            }
+        }
+        
+        strncpy(g_source_url, argv[4], sizeof(g_source_url) - 1);
+        g_source_url[sizeof(g_source_url) - 1] = '\0';
+        
+        strncpy(g_packages[0].name, argv[5], sizeof(g_packages[0].name) - 1);
+        g_packages[0].name[sizeof(g_packages[0].name) - 1] = '\0';
+        g_package_count = 1;
+    }
+
     if (is_install && argc < 9) {
         fprintf(stderr, "pier-pkg: install <PIER_ROOT> <LANGUAGE_DIR> <source_url> <pies_url> <autoyes> <SYS_ARCH> <package>...\n");
         return 1;
     }
     
-    if (!is_install && argc < 7) {
+    if (!is_install && !is_info && argc < 7) {
         fprintf(stderr, "pier-pkg: remove <PIER_ROOT> <LANGUAGE_DIR> <source_url> <autoyes> <package>...\n");
         return 1;
     }
@@ -1776,6 +1818,61 @@ int main(int argc, char *argv[]) {
     load_language();
     
     /* Process packages */
+    if (is_info) {
+        /* Download metadata */
+        printf("%s\n", g_str_loading);
+        download_metadata_batch();
+        
+        if (g_packages[0].metadata_downloaded) {
+            parse_metadata(0);
+        }
+        
+        /* Check if package was found */
+        if (!g_packages[0].metadata_downloaded) {
+            printf("%s %s\n", g_str_error_not_found, g_packages[0].name);
+            return 1;
+        }
+        
+        /* Display package info */
+        display_package_info(0);
+        
+        /* Display aliases */
+        {
+            char metadata_file[MAX_PATH_LEN];
+            char alias_content[MAX_LINE * 8];
+            snprintf(metadata_file, sizeof(metadata_file), "%s\\share\\cache\\metadata.sque", g_pier_root);
+            if (sque_read(metadata_file, "Alias", alias_content, sizeof(alias_content)) >= 0 && alias_content[0] != '\0') {
+                printf("\n");
+                vecho_line("$brightyellow$%s", g_str_info_alias_label);
+                char *line_ptr = strtok(alias_content, "\n");
+                while (line_ptr) {
+                    char *trimmed = line_ptr;
+                    while (*trimmed == ' ' || *trimmed == '\t') trimmed++;
+                    if (strlen(trimmed) > 0 && strchr(trimmed, ':')) {
+                        char line_copy[MAX_LINE];
+                        strncpy(line_copy, trimmed, sizeof(line_copy) - 1);
+                        line_copy[sizeof(line_copy) - 1] = '\0';
+                        char *colon = strchr(line_copy, ':');
+                        *colon = '\0';
+                        printf("  %-10s - %s\n", line_copy, colon + 1);
+                    }
+                    line_ptr = strtok(NULL, "\n");
+                }
+            }
+        }
+        
+        printf("\n");
+        
+        /* Cleanup cache */
+        {
+            char cache_dir[MAX_PATH_LEN];
+            snprintf(cache_dir, sizeof(cache_dir), "%s\\share\\cache", g_pier_root);
+            dir_remove(cache_dir);
+        }
+        
+        return 0;
+    }
+
     if (is_install) {
         /* Download all metadata in one batch */
         printf("%s\n", g_str_loading);
