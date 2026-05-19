@@ -1,6 +1,6 @@
 # DOCS 文件夹
 
-此文件夹是开发时写的 Markdown 文件，其目的是：
+此文件夹是 vibe coding 开发时 Agent 生成的 Markdown 文件，其目的是：
 
-> CONTEXT.MD - AI Agent（Codex、Trae）共享的永久开发上下文。
+> CONTEXT.MD - AI Agent（Codex、Trae）共享的永久开发上下文，写了约束、更新内容。
 > 
