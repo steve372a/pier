@@ -27,9 +27,9 @@
 
 ## ✨ 速看
 
-| 🚀 一行命令装软件 | 💾 XP/7 完美兼容 | 🧠 别名生态！ |
-|---|---|---|
-| `pier install notepadplusplus` | 工控机、老电脑、内网系统 | `pier o ffmpeg mp4 input.mp4 output.mp4` |
+| 🚀 一行命令装软件 | 💾 XP/7 完美兼容 | 🧠 别名生态！ | 零依赖！ |
+|---|---|---|---|
+| `pier install notepadplusplus` | 工控机、老电脑、内网系统 | `pier o ffmpeg mp4 input.mp4 output.mp4` | 什么 `git`、`powershell` 都不用安装，解压即用！ |
 
 ---
 
