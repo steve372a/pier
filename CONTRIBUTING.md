@@ -2,7 +2,7 @@
 
 欢迎！Pier 是一个轻量级 Windows 包管理器。
 
-参见 [软件源贡献](https://github.com/steve372a/pier-repo/CONTRIBUTING.md)
+参见 [软件源贡献](https://github.com/steve372a/pier-repo/blob/main/CONTRIBUTING.md)
 
 Pier 使用了 AI 辅助开发（CODEX+TRAE）
 
