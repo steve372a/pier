@@ -132,9 +132,10 @@ pier o user/package
 
 ## 🤝 贡献
 
-Pier 完全由 AI 辅助开发，为此，我写了个手册，帮助你彻底认识 Pier Package Installer，欢迎一切形式的贡献：
+Pier 完全由 AI 辅助开发，其原型是一个 Batch 脚本，欢迎一切形式的贡献：
 
 - 💡 提建议 → [Issues](https://github.com/steve372a/pier/issues)
+- 💡 别名模板提交 → [Issues](https://github.com/steve372a/pier-repo/issues)
 - 🐛 报 Bug → [Bug Report](https://github.com/steve372a/pier/issues/new)
 - 🔧 提 PR → [Pull Requests](https://github.com/steve372a/pier/pulls)
 
